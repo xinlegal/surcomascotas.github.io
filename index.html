@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Red vecinal gratuita para mascotas perdidas, encontradas y en adopción en Santiago de Surco." />
+  <title>Surco Mascotas | Vuelve a Casa</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="container nav">
+      <a class="brand" href="#inicio">🐾 <span>Surco Mascotas</span></a>
+      <nav>
+        <a href="#perdidos">Perdidos</a>
+        <a href="#encontrados">Encontrados</a>
+        <a href="#adopciones">Adopciones</a>
+        <a href="#tienda">Tienda</a>
+      </nav>
+      <button class="btn btn-primary" data-open-form>Publicar gratis</button>
+    </div>
+  </header>
+
+  <main id="inicio">
+    <section class="hero">
+      <div class="container hero-grid">
+        <div>
+          <span class="eyebrow">Red vecinal de Santiago de Surco</span>
+          <h1>Ayudamos a que vuelvan a casa.</h1>
+          <p class="hero-copy">
+            Publica gratuitamente mascotas perdidas, encontradas o en adopción.
+            Comparte el aviso por WhatsApp y moviliza a toda la comunidad.
+          </p>
+          <div class="hero-actions">
+            <button class="btn btn-danger" data-open-form data-type="Perdida">🔴 Perdí mi mascota</button>
+            <button class="btn btn-success" data-open-form data-type="Encontrada">🟢 Encontré una mascota</button>
+            <button class="btn btn-warm" data-open-form data-type="Adopción">🧡 Dar en adopción</button>
+          </div>
+          <div class="trust-row">
+            <span>✓ Publicaciones gratuitas</span>
+            <span>✓ Revisión antes de publicar</span>
+            <span>✓ Difusión por WhatsApp</span>
+          </div>
+        </div>
+
+        <aside class="hero-card">
+          <div class="hero-card-top">
+            <span class="pulse"></span>
+            Casos activos en Surco
+          </div>
+          <div class="stats">
+            <div><strong id="statLost">0</strong><span>Perdidos</span></div>
+            <div><strong id="statFound">0</strong><span>Encontrados</span></div>
+            <div><strong id="statAdopt">0</strong><span>Adopciones</span></div>
+          </div>
+          <button class="btn btn-dark full" data-open-form>Crear aviso ahora</button>
+        </aside>
+      </div>
+    </section>
+
+    <section class="search-section">
+      <div class="container search-box">
+        <input id="searchInput" type="search" placeholder="Buscar por nombre, zona, especie o característica..." />
+        <select id="zoneFilter">
+          <option value="">Todas las zonas</option>
+          <option>Surco Pueblo</option>
+          <option>Chacarilla</option>
+          <option>Monterrico</option>
+          <option>Higuereta</option>
+          <option>Sagitario</option>
+          <option>Valle Hermoso</option>
+          <option>Las Gardenias</option>
+        </select>
+      </div>
+    </section>
+
+    <section class="section" id="perdidos">
+      <div class="container">
+        <div class="section-heading">
+          <div>
+            <span class="eyebrow danger-text">Urgente</span>
+            <h2>Mascotas perdidas</h2>
+          </div>
+          <button class="text-btn" data-open-form data-type="Perdida">Reportar pérdida →</button>
+        </div>
+        <div class="cards" id="lostCards"></div>
+      </div>
+    </section>
+
+    <section class="section soft" id="encontrados">
+      <div class="container">
+        <div class="section-heading">
+          <div>
+            <span class="eyebrow success-text">Comunidad</span>
+            <h2>Mascotas encontradas</h2>
+          </div>
+          <button class="text-btn" data-open-form data-type="Encontrada">Reportar hallazgo →</button>
+        </div>
+        <div class="cards" id="foundCards"></div>
+      </div>
+    </section>
+
+    <section class="section" id="adopciones">
+      <div class="container">
+        <div class="section-heading">
+          <div>
+            <span class="eyebrow warm-text">Una nueva familia</span>
+            <h2>Adopciones responsables</h2>
+          </div>
+          <button class="text-btn" data-open-form data-type="Adopción">Publicar adopción →</button>
+        </div>
+        <div class="cards" id="adoptionCards"></div>
+      </div>
+    </section>
+
+    <section class="section final-happy">
+      <div class="container happy-grid">
+        <div>
+          <span class="eyebrow">❤️ Finales felices</span>
+          <h2>Cada reencuentro vale la pena.</h2>
+          <p>Cuando una mascota vuelve a casa, su ficha puede pasar a esta sección para celebrar y agradecer a quienes ayudaron compartiendo.</p>
+        </div>
+        <div class="happy-card">
+          <span class="happy-icon">🏠</span>
+          <strong>“Volvió a casa”</strong>
+          <p>Una sección pensada para generar confianza, emoción y comunidad.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section soft" id="tienda">
+      <div class="container">
+        <div class="section-heading">
+          <div>
+            <span class="eyebrow">🛒 Tienda</span>
+            <h2>Productos que ayudan a prevenir pérdidas</h2>
+          </div>
+        </div>
+        <div class="shop-grid">
+          <article class="product">
+            <div class="product-img">🏷️</div>
+            <h3>Placa “Vuelve a Casa”</h3>
+            <p>Placa personalizada con nombre, teléfono y QR.</p>
+            <button class="btn btn-dark full" data-product="Placa Vuelve a Casa">Comprar por WhatsApp</button>
+          </article>
+          <article class="product">
+            <div class="product-img">🦮</div>
+            <h3>Collar identificador</h3>
+            <p>Collar con espacio visible para datos de contacto.</p>
+            <button class="btn btn-dark full" data-product="Collar identificador">Comprar por WhatsApp</button>
+          </article>
+          <article class="product">
+            <div class="product-img">📍</div>
+            <h3>Localizador para mascota</h3>
+            <p>Sección preparada para añadir productos de rastreo y seguridad.</p>
+            <button class="btn btn-dark full" data-product="Localizador para mascota">Consultar por WhatsApp</button>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section memorial">
+      <div class="container memorial-box">
+        <div class="memorial-icon">🐾</div>
+        <div>
+          <span class="eyebrow">Nuestra inspiración</span>
+          <h2>En memoria de Manchitas</h2>
+          <p>Esta iniciativa nace del amor por nuestras mascotas y del deseo de ayudar a los vecinos de Santiago de Surco a reencontrarse con quienes son parte de su familia.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container footer-grid">
+      <div>
+        <strong>🐾 Surco Mascotas – Vuelve a Casa</strong>
+        <p>Perdidos · Encontrados · Adopciones · Comunidad · Tienda</p>
+      </div>
+      <div class="footer-links">
+        <a href="#" id="facebookLink" target="_blank" rel="noopener">Facebook</a>
+        <a href="#" id="whatsappLink" target="_blank" rel="noopener">WhatsApp</a>
+      </div>
+    </div>
+  </footer>
+
+  <div class="modal" id="publishModal" aria-hidden="true">
+    <div class="modal-backdrop" data-close-form></div>
+    <div class="modal-card">
+      <button class="modal-close" data-close-form>×</button>
+      <span class="eyebrow">Publicación gratuita</span>
+      <h2>Crear aviso</h2>
+      <p class="muted">Completa los datos. El aviso se enviará al administrador para revisión antes de publicarse.</p>
+
+      <form id="publishForm">
+        <label>Tipo de aviso
+          <select id="formType" required>
+            <option value="Perdida">Mascota perdida</option>
+            <option value="Encontrada">Mascota encontrada</option>
+            <option value="Adopción">Adopción</option>
+          </select>
+        </label>
+
+        <div class="form-grid">
+          <label>Nombre
+            <input id="petName" required placeholder="Ej. Luna" />
+          </label>
+          <label>Especie
+            <select id="species" required>
+              <option>Perro</option>
+              <option>Gato</option>
+              <option>Otra</option>
+            </select>
+          </label>
+        </div>
+
+        <label>Zona de Surco
+          <input id="petZone" required placeholder="Ej. Chacarilla, Surco Pueblo..." />
+        </label>
+
+        <label>Fecha
+          <input id="petDate" type="date" required />
+        </label>
+
+        <label>Descripción
+          <textarea id="petDescription" rows="4" required placeholder="Color, tamaño, collar, señales particulares, circunstancias..."></textarea>
+        </label>
+
+        <label>Teléfono / WhatsApp de contacto
+          <input id="contactPhone" required placeholder="9XXXXXXXX" />
+        </label>
+
+        <button class="btn btn-primary full" type="submit">Enviar para revisión por WhatsApp</button>
+        <p class="privacy-note">No se cobra por publicar. Evita colocar dirección domiciliaria exacta.</p>
+      </form>
+    </div>
+  </div>
+
+  <script src="config.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
