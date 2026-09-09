@@ -1,33 +1,18 @@
-# Surco Mascotas – Vuelve a Casa
+# Surco Mascotas – V3
 
-Primera versión gratuita de la web comunitaria para:
+Esta versión tiene una portada más cálida y emocional.
 
-- Mascotas perdidas
-- Mascotas encontradas
-- Adopciones
-- Difusión por WhatsApp
-- Tienda de productos
+## Novedades
+- Portada más marketera y humana
+- Enfoque fuerte en corazón + Santiago de Surco
+- Imagen real tomada de la referencia enviada
+- Sección narrativa para conectar mejor
+- Mantiene formulario gratuito y tienda
 
-## Antes de publicar
-
-Editar `config.js` y reemplazar:
-
-```js
-whatsappAdmin: "51999999999"
-```
-
-por el número real del administrador, con código de país 51 y sin espacios.
-
-## Publicación gratuita en GitHub Pages
-
-1. Crear un repositorio en GitHub.
-2. Subir `index.html`, `styles.css`, `app.js` y `config.js`.
-3. Ir a Settings > Pages.
-4. En "Build and deployment", elegir "Deploy from a branch".
-5. Seleccionar `main` y `/ (root)`.
-6. Guardar.
+## Archivos nuevos
+- img/manchitas.jpg
+- img/historia-surco.jpg
+- img/cover-surco.jpg
 
 ## Importante
-
-Esta versión inicial envía las solicitudes de publicación al WhatsApp del administrador para revisión.
-La siguiente etapa puede incorporar panel privado, base de datos y carga de fotos.
+Puedes reemplazar esas imágenes por fotos reales de mejor calidad y el diseño las tomará automáticamente.
