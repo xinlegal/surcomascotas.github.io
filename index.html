@@ -7,7 +7,7 @@
   <title>Surco Mascotas | Vuelve a Casa</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
@@ -27,37 +27,92 @@
   <main id="inicio">
     <section class="hero">
       <div class="container hero-grid">
-        <div>
-          <span class="eyebrow">Red vecinal de Santiago de Surco</span>
-          <h1>Ayudamos a que vuelvan a casa.</h1>
+        <div class="hero-copy-block">
+          <span class="eyebrow">🐾 Red solidaria de Santiago de Surco</span>
+          <h1>Si tu mascota se perdió, aquí empezamos a traerla de vuelta a casa.</h1>
           <p class="hero-copy">
-            Publica gratuitamente mascotas perdidas, encontradas o en adopción.
-            Comparte el aviso por WhatsApp y moviliza a toda la comunidad.
+            Publica <strong>gratis</strong> casos de mascotas perdidas, encontradas o en adopción.
+            Conecta con vecinos, difunde por WhatsApp y convierte esta web en la primera ayuda
+            cuando una familia vive la angustia de no saber dónde está su compañero.
           </p>
+
           <div class="hero-actions">
-            <button class="btn btn-danger" data-open-form data-type="Perdida">🔴 Perdí mi mascota</button>
-            <button class="btn btn-success" data-open-form data-type="Encontrada">🟢 Encontré una mascota</button>
-            <button class="btn btn-warm" data-open-form data-type="Adopción">🧡 Dar en adopción</button>
+            <button class="btn btn-primary" data-open-form data-type="Perdida">Publicar mascota perdida</button>
+            <a class="btn btn-light" href="#perdidos">Ver casos activos</a>
           </div>
-          <div class="trust-row">
-            <span>✓ Publicaciones gratuitas</span>
-            <span>✓ Revisión antes de publicar</span>
-            <span>✓ Difusión por WhatsApp</span>
+
+          <div class="hero-mini">
+            <div class="mini-card">
+              <span class="mini-icon">❤️</span>
+              <div>
+                <strong>Publicación gratuita</strong>
+                <p>Nunca se cobra por ayudar a encontrar una mascota.</p>
+              </div>
+            </div>
+            <div class="mini-card">
+              <span class="mini-icon">📲</span>
+              <div>
+                <strong>Difusión inmediata</strong>
+                <p>Comparte avisos fácilmente por WhatsApp y redes.</p>
+              </div>
+            </div>
+            <div class="mini-card">
+              <span class="mini-icon">🛍️</span>
+              <div>
+                <strong>Tienda con propósito</strong>
+                <p>Vende placas, collares y accesorios que ayudan a prevenir pérdidas.</p>
+              </div>
+            </div>
           </div>
         </div>
 
-        <aside class="hero-card">
-          <div class="hero-card-top">
-            <span class="pulse"></span>
-            Casos activos en Surco
+        <aside class="hero-panel">
+          <div class="hero-panel-top">
+            <span class="live-dot"></span>
+            Comunidad activa de ayuda vecinal
           </div>
+
+          <div class="panel-card panel-highlight">
+            <p class="panel-kicker">MENSAJE CENTRAL</p>
+            <h3>“Ayudamos a que vuelvan a casa”</h3>
+            <p>Cada aviso puede ser el comienzo de un reencuentro.</p>
+          </div>
+
           <div class="stats">
             <div><strong id="statLost">0</strong><span>Perdidos</span></div>
             <div><strong id="statFound">0</strong><span>Encontrados</span></div>
             <div><strong id="statAdopt">0</strong><span>Adopciones</span></div>
           </div>
-          <button class="btn btn-dark full" data-open-form>Crear aviso ahora</button>
+
+          <div class="panel-card quick-box">
+            <strong>¿Qué puedes hacer aquí?</strong>
+            <ul>
+              <li>Publicar una mascota perdida</li>
+              <li>Reportar una mascota encontrada</li>
+              <li>Dar en adopción responsable</li>
+              <li>Comprar productos para prevención</li>
+            </ul>
+          </div>
+
+          <button class="btn btn-dark full" data-open-form>Quiero publicar ahora</button>
         </aside>
+      </div>
+    </section>
+
+    <section class="value-strip">
+      <div class="container value-grid">
+        <div class="value-item">
+          <strong>Más visibilidad</strong>
+          <span>Tu caso no se pierde entre cientos de publicaciones.</span>
+        </div>
+        <div class="value-item">
+          <strong>Más confianza</strong>
+          <span>Las publicaciones se revisan antes de salir en la web.</span>
+        </div>
+        <div class="value-item">
+          <strong>Más ingresos</strong>
+          <span>La tienda permite monetizar sin cobrar por publicar.</span>
+        </div>
       </div>
     </section>
 
@@ -83,6 +138,7 @@
           <div>
             <span class="eyebrow danger-text">Urgente</span>
             <h2>Mascotas perdidas</h2>
+            <p class="section-copy">Cada minuto cuenta. Reúne a la comunidad y multiplica las posibilidades de encontrarlas.</p>
           </div>
           <button class="text-btn" data-open-form data-type="Perdida">Reportar pérdida →</button>
         </div>
@@ -96,6 +152,7 @@
           <div>
             <span class="eyebrow success-text">Comunidad</span>
             <h2>Mascotas encontradas</h2>
+            <p class="section-copy">Si viste una mascota sola o desorientada, aquí puedes ayudar a devolverla a su familia.</p>
           </div>
           <button class="text-btn" data-open-form data-type="Encontrada">Reportar hallazgo →</button>
         </div>
@@ -109,6 +166,7 @@
           <div>
             <span class="eyebrow warm-text">Una nueva familia</span>
             <h2>Adopciones responsables</h2>
+            <p class="section-copy">Porque toda mascota merece cuidado, cariño y un hogar seguro.</p>
           </div>
           <button class="text-btn" data-open-form data-type="Adopción">Publicar adopción →</button>
         </div>
@@ -116,17 +174,16 @@
       </div>
     </section>
 
-    <section class="section final-happy">
-      <div class="container happy-grid">
+    <section class="section emotion-band">
+      <div class="container emotion-grid">
         <div>
-          <span class="eyebrow">❤️ Finales felices</span>
-          <h2>Cada reencuentro vale la pena.</h2>
-          <p>Cuando una mascota vuelve a casa, su ficha puede pasar a esta sección para celebrar y agradecer a quienes ayudaron compartiendo.</p>
+          <span class="eyebrow">❤️ Más que una web</span>
+          <h2>Una comunidad que acompaña en uno de los momentos más angustiantes para una familia.</h2>
+          <p>Surco Mascotas no solo organiza publicaciones. También genera confianza, moviliza a los vecinos y crea un espacio útil para prevenir pérdidas mediante productos y servicios para mascotas.</p>
         </div>
-        <div class="happy-card">
-          <span class="happy-icon">🏠</span>
-          <strong>“Volvió a casa”</strong>
-          <p>Una sección pensada para generar confianza, emoción y comunidad.</p>
+        <div class="emotion-box">
+          <strong>Idea de venta clara:</strong>
+          <p>Ayuda social + comunidad + tienda + futuras alianzas con veterinarias y pet shops.</p>
         </div>
       </div>
     </section>
@@ -137,6 +194,7 @@
           <div>
             <span class="eyebrow">🛒 Tienda</span>
             <h2>Productos que ayudan a prevenir pérdidas</h2>
+            <p class="section-copy">Esta es la línea de ingresos de la web: vender sin afectar la publicación gratuita de casos.</p>
           </div>
         </div>
         <div class="shop-grid">
@@ -158,6 +216,21 @@
             <p>Sección preparada para añadir productos de rastreo y seguridad.</p>
             <button class="btn btn-dark full" data-product="Localizador para mascota">Consultar por WhatsApp</button>
           </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section final-happy">
+      <div class="container happy-grid">
+        <div>
+          <span class="eyebrow">🏠 Finales felices</span>
+          <h2>Cuando una mascota vuelve, toda la comunidad gana.</h2>
+          <p>La sección “Volvió a casa” te ayudará a generar emoción, confianza y más movimiento orgánico en redes sociales.</p>
+        </div>
+        <div class="happy-card">
+          <span class="happy-icon">🎉</span>
+          <strong>Historias que conectan</strong>
+          <p>Los reencuentros son el contenido que más fideliza y más impulsa a compartir.</p>
         </div>
       </div>
     </section>
