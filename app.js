@@ -1,48 +1,10 @@
 const CONFIG = window.SURCO_MASCOTAS_CONFIG || {};
 const adminWhatsApp = String(CONFIG.whatsappAdmin || "").replace(/\D/g, "");
+const supabaseClient = (window.supabase && CONFIG.supabaseUrl && CONFIG.supabaseKey)
+  ? window.supabase.createClient(CONFIG.supabaseUrl, CONFIG.supabaseKey)
+  : null;
 
-const pets = [
-  {
-    id: 1,
-    type: "Perdida",
-    name: "Luna",
-    species: "Perro",
-    zone: "Chacarilla",
-    date: "2026-09-08",
-    description: "Perrita pequeña, blanca, con collar rosado. Ejemplo de publicación.",
-    emoji: "🐕"
-  },
-  {
-    id: 2,
-    type: "Perdida",
-    name: "Max",
-    species: "Perro",
-    zone: "Surco Pueblo",
-    date: "2026-09-07",
-    description: "Mediano, pelaje marrón. Ejemplo de publicación.",
-    emoji: "🐶"
-  },
-  {
-    id: 3,
-    type: "Encontrada",
-    name: "Sin nombre",
-    species: "Gato",
-    zone: "Higuereta",
-    date: "2026-09-09",
-    description: "Gatito encontrado cerca de un parque. Ejemplo de publicación.",
-    emoji: "🐈"
-  },
-  {
-    id: 4,
-    type: "Adopción",
-    name: "Milo",
-    species: "Gato",
-    zone: "Monterrico",
-    date: "2026-09-06",
-    description: "Cariñoso y sociable. Busca adopción responsable.",
-    emoji: "🐱"
-  }
-];
+let pets = [];
 
 const els = {
   lost: document.getElementById("lostCards"),
@@ -51,7 +13,9 @@ const els = {
   search: document.getElementById("searchInput"),
   zone: document.getElementById("zoneFilter"),
   modal: document.getElementById("publishModal"),
-  formType: document.getElementById("formType")
+  formType: document.getElementById("formType"),
+  publishStatus: document.getElementById("publishStatus"),
+  publishSubmit: document.getElementById("publishSubmit")
 };
 
 function badgeClass(type) {
@@ -66,9 +30,13 @@ function cardTemplate(pet) {
     `📍 ${pet.zone}\n📅 ${pet.date}\n` +
     `${pet.description}\n\nAyúdanos compartiendo este aviso de Surco Mascotas.`
   );
+  const photo = pet.photo_url
+    ? `<img src="${pet.photo_url}" alt="${pet.name}" loading="lazy" style="width:100%;height:220px;object-fit:cover;display:block;">`
+    : (pet.species === "Gato" ? "🐈" : "🐶");
+
   return `
     <article class="pet-card">
-      <div class="pet-photo">${pet.emoji}</div>
+      <div class="pet-photo">${photo}</div>
       <div class="pet-body">
         <span class="badge ${badgeClass(pet.type)}">${pet.type}</span>
         <h3>${pet.name}</h3>
@@ -85,7 +53,6 @@ function cardTemplate(pet) {
 function render() {
   const q = (els.search.value || "").toLowerCase().trim();
   const zone = els.zone.value;
-
   const filtered = pets.filter(p => {
     const hay = `${p.name} ${p.species} ${p.zone} ${p.description}`.toLowerCase();
     return (!q || hay.includes(q)) && (!zone || p.zone === zone);
@@ -100,12 +67,43 @@ function render() {
   document.getElementById("statAdopt").textContent = pets.filter(p => p.type === "Adopción").length;
 }
 
+async function loadApprovedPets() {
+  if (!supabaseClient) {
+    render();
+    return;
+  }
+  const { data, error } = await supabaseClient
+    .from("mascotas_publicaciones")
+    .select("id,tipo,nombre,especie,zona,fecha,descripcion,telefono,foto_url,estado,creado_en")
+    .eq("estado", "Aprobado")
+    .order("creado_en", { ascending: false });
+
+  if (error) {
+    console.error("Error al cargar publicaciones:", error);
+    pets = [];
+  } else {
+    pets = (data || []).map(row => ({
+      id: row.id,
+      type: row.tipo,
+      name: row.nombre,
+      species: row.especie,
+      zone: row.zona,
+      date: row.fecha,
+      description: row.descripcion,
+      phone: row.telefono,
+      photo_url: row.foto_url
+    }));
+  }
+  render();
+}
+
 els.search.addEventListener("input", render);
 els.zone.addEventListener("change", render);
 
 document.querySelectorAll("[data-open-form]").forEach(btn => {
   btn.addEventListener("click", () => {
     if (btn.dataset.type) els.formType.value = btn.dataset.type;
+    els.publishStatus.textContent = "";
     els.modal.classList.add("open");
     els.modal.setAttribute("aria-hidden", "false");
   });
@@ -118,10 +116,10 @@ document.querySelectorAll("[data-close-form]").forEach(btn => {
   });
 });
 
-document.getElementById("publishForm").addEventListener("submit", (e) => {
+document.getElementById("publishForm").addEventListener("submit", async (e) => {
   e.preventDefault();
-  if (!adminWhatsApp || adminWhatsApp === "51999999999") {
-    alert("Antes de publicar la web, coloca el WhatsApp del administrador en config.js.");
+  if (!supabaseClient) {
+    alert("La conexión con la base de datos aún no está disponible.");
     return;
   }
 
@@ -132,29 +130,69 @@ document.getElementById("publishForm").addEventListener("submit", (e) => {
   const date = document.getElementById("petDate").value;
   const description = document.getElementById("petDescription").value.trim();
   const phone = document.getElementById("contactPhone").value.trim();
+  const photoInput = document.getElementById("petPhoto");
+  const file = photoInput.files[0];
 
-  const message =
-`🐾 SOLICITUD DE PUBLICACIÓN - SURCO MASCOTAS
+  if (!file) {
+    alert("Selecciona una foto de la mascota.");
+    return;
+  }
+  if (file.size > 5 * 1024 * 1024) {
+    alert("La foto no debe superar los 5 MB.");
+    return;
+  }
 
-Tipo: ${type}
-Nombre: ${name}
-Especie: ${species}
-Zona: ${zone}
-Fecha: ${date}
-Descripción: ${description}
-Contacto: ${phone}
+  els.publishSubmit.disabled = true;
+  els.publishSubmit.textContent = "Enviando...";
+  els.publishStatus.textContent = "Subiendo foto y registrando publicación...";
 
-La publicación es gratuita y queda sujeta a revisión antes de aparecer en la web.`;
+  try {
+    const ext = (file.name.split(".").pop() || "jpg").toLowerCase();
+    const safeExt = ["jpg","jpeg","png","webp"].includes(ext) ? ext : "jpg";
+    const fileName = `${Date.now()}-${crypto.randomUUID()}.${safeExt}`;
+    const filePath = `pendientes/${fileName}`;
 
-  window.open(`https://wa.me/${adminWhatsApp}?text=${encodeURIComponent(message)}`, "_blank");
+    const { error: uploadError } = await supabaseClient.storage
+      .from("mascotas")
+      .upload(filePath, file, { cacheControl: "3600", upsert: false, contentType: file.type });
+    if (uploadError) throw uploadError;
+
+    const { data: publicData } = supabaseClient.storage.from("mascotas").getPublicUrl(filePath);
+    const photoUrl = publicData.publicUrl;
+
+    const { error: insertError } = await supabaseClient
+      .from("mascotas_publicaciones")
+      .insert({
+        tipo: type,
+        nombre: name,
+        especie: species,
+        zona: zone,
+        fecha: date,
+        descripcion: description,
+        telefono: phone,
+        foto_url: photoUrl,
+        estado: "Pendiente"
+      });
+    if (insertError) throw insertError;
+
+    els.publishStatus.textContent = "✅ Tu publicación fue enviada correctamente y está pendiente de aprobación.";
+    document.getElementById("publishForm").reset();
+    setTimeout(() => {
+      els.modal.classList.remove("open");
+      els.modal.setAttribute("aria-hidden", "true");
+    }, 1800);
+  } catch (err) {
+    console.error(err);
+    els.publishStatus.textContent = `❌ No se pudo enviar la publicación: ${err.message || "error inesperado"}`;
+  } finally {
+    els.publishSubmit.disabled = false;
+    els.publishSubmit.textContent = "Enviar para aprobación";
+  }
 });
 
 document.querySelectorAll("[data-product]").forEach(btn => {
   btn.addEventListener("click", () => {
-    if (!adminWhatsApp || adminWhatsApp === "51999999999") {
-      alert("Configura el WhatsApp del administrador en config.js.");
-      return;
-    }
+    if (!adminWhatsApp) return;
     const product = btn.dataset.product;
     const msg = encodeURIComponent(`Hola. Vi ${product} en Surco Mascotas y deseo más información.`);
     window.open(`https://wa.me/${adminWhatsApp}?text=${msg}`, "_blank");
@@ -164,4 +202,4 @@ document.querySelectorAll("[data-product]").forEach(btn => {
 document.getElementById("facebookLink").href = CONFIG.facebookUrl || "#";
 document.getElementById("whatsappLink").href = adminWhatsApp ? `https://wa.me/${adminWhatsApp}` : "#";
 
-render();
+loadApprovedPets();
